@@ -1,8 +1,9 @@
 package MainPackage;
 
 import java.awt.Color;
+import java.io.Serializable;
 
-public class Car {
+public class Car implements Serializable {
     
     private int id;
     private String name;

@@ -7,13 +7,14 @@ package MainPackage.CarTypes;
 
 import MainPackage.Car;
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  *
  * @author ThunderKnight
  */
-public class McQueen extends Car {
+public class McQueen extends Car implements Serializable {
 
     public McQueen(int id, String name, Color color) {
         super(id, name, color);

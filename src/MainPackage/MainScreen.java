@@ -12,6 +12,7 @@ import java.awt.Color;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -44,7 +45,7 @@ public class MainScreen extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        carsTable = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -79,7 +80,7 @@ public class MainScreen extends javax.swing.JFrame {
 
         jLabel3.setText("PROGRESS");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        carsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -102,7 +103,7 @@ public class MainScreen extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(carsTable);
 
         jLabel4.setFont(new java.awt.Font("Gill Sans MT", 1, 18)); // NOI18N
         jLabel4.setText("Add a new car");
@@ -149,6 +150,11 @@ public class MainScreen extends javax.swing.JFrame {
         jButton6.setText("-");
 
         jButton7.setText("+");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -329,6 +335,8 @@ public class MainScreen extends javax.swing.JFrame {
             }
             JOptionPane.showMessageDialog(this, "Auto creado");
             Main.Functions.updateComboBox();
+            Main.Functions.saveFile();
+            
         }else{
             JOptionPane.showMessageDialog(null, "Debe ingresar un nombre y ID unicos");
         }
@@ -337,6 +345,16 @@ public class MainScreen extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         selectedColor = JColorChooser.showDialog(null,"Escoja el color del carro", Color.RED);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+       Car car = Main.Functions.getCarByName( carInput.getSelectedItem().toString() );
+       DefaultTableModel model = (DefaultTableModel) carsTable.getModel(); 
+       
+       if(car != null){
+        model.addRow( new Object[]{car.getId(), car.getName(), car.getDistance()} );
+       }
+       
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     public JComboBox<String> getCarInput() {
         return carInput;
@@ -383,6 +401,7 @@ public class MainScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> carInput;
+    private javax.swing.JTable carsTable;
     private javax.swing.JSpinner idInput;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -408,7 +427,6 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField nameInput;
     private javax.swing.JButton pauseButton;

@@ -7,13 +7,14 @@ package MainPackage.CarTypes;
 
 import MainPackage.Car;
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  *
  * @author ThunderKnight
  */
-public class Convertible extends Car {
+public class Convertible extends Car implements Serializable {
 
     public Convertible(int id, String name, Color color) {
         super(id, name, color);
