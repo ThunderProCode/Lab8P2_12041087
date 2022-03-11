@@ -9,9 +9,15 @@ import MainPackage.CarTypes.Convertible;
 import MainPackage.CarTypes.McQueen;
 import MainPackage.CarTypes.Nascar;
 import java.awt.Color;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,7 +27,8 @@ import javax.swing.table.DefaultTableModel;
 public class MainScreen extends javax.swing.JFrame {
     
     private Color selectedColor;
-    
+    private int trackLength;
+
     /**
      * Creates new form MainScreen
      */
@@ -41,7 +48,7 @@ public class MainScreen extends javax.swing.JFrame {
         pauseButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        carProgress = new javax.swing.JProgressBar();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -50,7 +57,7 @@ public class MainScreen extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        trackLengthInput = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
@@ -69,6 +76,8 @@ public class MainScreen extends javax.swing.JFrame {
         carInput = new javax.swing.JComboBox<>();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        trackLengthLabel = new javax.swing.JLabel();
+        trackNameLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -146,8 +155,18 @@ public class MainScreen extends javax.swing.JFrame {
         });
 
         jButton5.setText("Start");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("-");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setText("+");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -155,6 +174,10 @@ public class MainScreen extends javax.swing.JFrame {
                 jButton7ActionPerformed(evt);
             }
         });
+
+        trackLengthLabel.setText("__________");
+
+        trackNameLabel.setText("___________");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -179,7 +202,7 @@ public class MainScreen extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel6)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(trackLengthInput, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -222,7 +245,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(carProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton5)
@@ -230,9 +253,13 @@ public class MainScreen extends javax.swing.JFrame {
                         .addComponent(pauseButton)
                         .addGap(66, 66, 66)
                         .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(trackNameLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2)
-                        .addGap(125, 125, 125))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(trackLengthLabel)
+                        .addGap(76, 76, 76))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(79, 79, 79)
                 .addComponent(carInput, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -250,13 +277,15 @@ public class MainScreen extends javax.swing.JFrame {
                     .addComponent(pauseButton)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jButton5))
+                    .addComponent(jButton5)
+                    .addComponent(trackLengthLabel)
+                    .addComponent(trackNameLabel))
                 .addGap(5, 5, 5)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(carProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -279,7 +308,7 @@ public class MainScreen extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(trackLengthInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -310,7 +339,8 @@ public class MainScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+      this.trackLength = (Integer) trackLengthInput.getValue();
+      trackLengthLabel.setText( Integer.toString(trackLength) );
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -356,6 +386,51 @@ public class MainScreen extends javax.swing.JFrame {
        
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+       
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        Car car = Main.Functions.getCarByName(carInput.getSelectedItem().toString());
+       
+//        final CyclicBarrier gate = new CyclicBarrier(3);
+        
+        Main.MyThread.start();
+        Main.TableThread.start();
+        
+        Main.TableThread.run(car);
+        Main.MyThread.run();
+        
+        Main.MyThread.stop();
+        Main.TableThread.stop();
+        
+        
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    public JProgressBar getCarProgress() {
+        return carProgress;
+    }
+
+    public void setCarProgress(JProgressBar carProgress) {
+        this.carProgress = carProgress;
+    }
+    
+    public JTable getCarsTable() {
+        return carsTable;
+    }
+
+    public void setCarsTable(JTable carsTable) {
+        this.carsTable = carsTable;
+    }
+    
+    public int getTrackLength() {
+        return trackLength;
+    }
+
+    public void setTrackLength(int trackLength) {
+        this.trackLength = trackLength;
+    }
+    
     public JComboBox<String> getCarInput() {
         return carInput;
     }
@@ -401,6 +476,7 @@ public class MainScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> carInput;
+    private javax.swing.JProgressBar carProgress;
     private javax.swing.JTable carsTable;
     private javax.swing.JSpinner idInput;
     private javax.swing.JButton jButton1;
@@ -420,16 +496,17 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField nameInput;
     private javax.swing.JButton pauseButton;
+    private javax.swing.JSpinner trackLengthInput;
+    private javax.swing.JLabel trackLengthLabel;
+    private javax.swing.JLabel trackNameLabel;
     private javax.swing.JComboBox<String> typeInput;
     // End of variables declaration//GEN-END:variables
 }

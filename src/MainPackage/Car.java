@@ -9,12 +9,34 @@ public class Car implements Serializable {
     private String name;
     private int distance;
     private Color color;
+    
+    private boolean ended;
+
+    /**
+     * Get the value of ended
+     *
+     * @return the value of ended
+     */
+    public boolean isEnded() {
+        return ended;
+    }
+
+    /**
+     * Set the value of ended
+     *
+     * @param ended new value of ended
+     */
+    public void setEnded(boolean ended) {
+        this.ended = ended;
+    }
+
 
     public Car(int id, String name, Color color) {
         this.id = id;
         this.name = name;
         this.distance = 0;
         this.color = color;
+        this.ended = false;
     }
     
     /**

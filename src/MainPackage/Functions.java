@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 public class Functions {
     public ArrayList<Car> carsList = new ArrayList();
@@ -31,10 +32,14 @@ public class Functions {
     
     public void updateComboBox(){
         Main.MainScreen.getCarInput().removeAllItems();
-        
         for (Car car : carsList) {
            Main.MainScreen.getCarInput().addItem(car.getName());
         }
+    }
+    
+    public void updateJtable(){
+        
+        
     }
     
     public Car getCarByName(String carName){
@@ -101,5 +106,4 @@ public class Functions {
         }
         return true;
     }
-    
 }
