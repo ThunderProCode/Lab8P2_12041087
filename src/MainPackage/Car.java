@@ -79,6 +79,12 @@ public class Car {
     public void setColor(Color color) {
         this.color = color;
     }
+
+    @Override
+    public String toString() {
+        return "id: " + id + ", name: " + name + ", distance: " + distance + ", color: " + color;
+    }
+   
     
     public void startRace(){
         

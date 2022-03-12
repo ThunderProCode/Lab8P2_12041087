@@ -21,4 +21,30 @@ public class Functions {
         this.carsList.remove(car);
     }
     
+    public void updateComboBox(){
+        Main.MainScreen.getCarInput().removeAllItems();
+        for (Car car : carsList) {
+           Main.MainScreen.getCarInput().addItem(car.getName());
+        }
+    }
+    
+    //Validadores 
+    public boolean idExists(int id){
+        for (Car car : carsList) {
+            if(car.getId() == id){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public boolean nameExists(String name){
+        for (Car car : carsList) {
+            if(car.getName().equals(name)){
+                return false;
+            }
+        }
+        return true;
+    }
+    
 }
